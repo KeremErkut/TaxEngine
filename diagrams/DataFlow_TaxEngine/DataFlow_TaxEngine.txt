@@ -1,0 +1,34 @@
+graph TD
+    %% External Entities
+    User((User / Brokerage CSV))
+    TCMB_API[[CBRT / TCMB Data]]
+    TUIK_API[[TURKSTAT / TÜİK Data]]
+
+    %% Processes
+    P1[1.0 Data Ingestion & Validation]
+    P2[2.0 Currency & Index Enrichment]
+    P3[3.0 FIFO Matching Engine]
+    P4[4.0 Tax Calculation & Compliance]
+    P5[5.0 Report Generation]
+
+    %% Data Stores
+    DS1[(Standardized Trades Buffer)]
+    DS2[(Reference Data Store)]
+    DS3[(Gain & Loss Records)]
+
+    %% Data Flows
+    User -->|Raw Transaction History| P1
+    P1 -->|Cleaned Trade Data| DS1
+    
+    TCMB_API -->|Historical FX Rates| DS2
+    TUIK_API -->|Monthly WPI Indices| DS2
+    
+    DS1 -->|Trades| P2
+    DS2 -->|Rates & Factors| P2
+    
+    P2 -->|Enriched Transactions| P3
+    P3 -->|Matched Lots| P4
+    P4 -->|Realized Gains/Losses| DS3
+    
+    DS3 -->|Final Tax Metrics| P5
+    P5 -->|Annual Tax Report / PDF| User

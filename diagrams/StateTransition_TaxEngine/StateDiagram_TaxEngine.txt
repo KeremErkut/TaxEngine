@@ -1,0 +1,23 @@
+stateDiagram-v2
+    [*] --> Idle: System Start
+    
+    Idle --> Ingesting: File Upload (CSV/Excel)
+    
+    Ingesting --> Validating: Data Received
+    Validating --> Preprocessing: Success
+    Validating --> Error: Invalid Schema/Type
+    
+    Preprocessing --> Enriching: Normalization Complete
+    Preprocessing --> Error: Parsing Failure
+    
+    Enriching --> CalculatingFIFO: Rates & Indices Fetched
+    Enriching --> Error: Missing Reference Data
+    
+    CalculatingFIFO --> Reporting: Gain/Loss Records Generated
+    CalculatingFIFO --> Error: Matching Logic Failure
+    
+    Reporting --> Cleaning: Report Exported (PDF/Excel)
+    
+    Cleaning --> [*]: RAM Purged & Session Closed
+    
+    Error --> Idle: Log & Reset

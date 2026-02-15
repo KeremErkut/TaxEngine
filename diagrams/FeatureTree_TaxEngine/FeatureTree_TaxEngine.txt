@@ -1,0 +1,43 @@
+mindmap
+  root((TaxEngine PoC))
+    Data Management
+      Import Support
+        CSV Format
+        Excel Format
+      Validation
+        Schema Check
+        Type Validation
+      Normalization
+        Date Standardizing
+        Ticker Mapping
+    Tax Engine Core
+      FIFO Algorithm
+        Lot Matching
+        Partial Fill Handling
+      FX Conversion
+        CBRT Buying Rates
+        Historical Matching
+      Indexing Logic
+        WPI-YİÜFE Tracking
+        10-percent Threshold Check
+      Compliance
+        GVK 80-81 Rules
+        Annual Tax Brackets
+    Reporting & Output
+      Summary Report
+        Net Taxable Base
+        Total Gains/Losses
+      Audit Trail
+        Transaction Breakdown
+        Indexing Proofs
+      Export Formats
+        PDF Export
+        Excel Export
+    Quality & Security
+      Performance
+        Under 5s Execution
+      Privacy
+        Volatile RAM Processing
+        Zero Data Retention
+      Accuracy
+        Decimal Precision Math

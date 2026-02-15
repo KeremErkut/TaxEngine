@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# Data (Büyük veri dosyalarını repo dışında tutmak iyidir)
+assets/*.csv
+assets/*.xlsx
+!assets/sample_trades.csv

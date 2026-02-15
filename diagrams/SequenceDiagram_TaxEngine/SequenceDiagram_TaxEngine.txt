@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant UI as CLI / Input Handler
+    participant DL as Data Loader
+    participant REF as Reference Data Service
+    participant FIFO as FIFO Engine
+    participant CALC as Tax Calculator
+    participant REP as Report Generator
+
+    User->>UI: Upload Transaction CSV/Excel
+    UI->>DL: Parse & Validate Data
+    activate DL
+    Note right of DL: Check for missing fields
+    DL-->>UI: Normalized Trade Objects
+    deactivate DL
+
+    UI->>REF: Fetch FX Rates (TCMB) & WPI (TÜİK)
+    activate REF
+    REF-->>UI: Enriched Reference Data Store
+    deactivate REF
+
+    UI->>FIFO: Match Sells with Purchase Lots
+    activate FIFO
+    Note over FIFO: Sort by Date (FIFO Logic)
+    FIFO-->>UI: Matched Lot Mappings
+    deactivate FIFO
+
+    UI->>CALC: Calculate Taxable Base (GVK 80-81)
+    activate CALC
+    Note over CALC: Apply 10% WPI Indexing Rule
+    CALC-->>UI: Realized Gain/Loss Records
+    deactivate CALC
+
+    UI->>REP: Generate PDF/Excel Summary
+    activate REP
+    REP-->>User: Download Final Tax Report
+    deactivate REP
+
+    Note over UI, REP: Session End: Purge Sensitive Data from RAM
