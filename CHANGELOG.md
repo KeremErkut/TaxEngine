@@ -36,15 +36,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **DataSource Interface:** `loader/base.py` — Abstract base class for future data source adapters.
 - **CSV Loader:** `loader/csv_loader.py` — CSV/Excel ingestion with date normalization and schema validation.
 
-### [0.4.0] - Planned 
+---
+
+### [0.4.0] - 2026-02-19
 #### Added
 - **Project Skeleton:** Modular folder structure (`models/`, `engine/`, `loader/`, `reporter/`, `config/`, `tests/`).
 - **Trade Model:** `models/trade.py` — Pydantic model with `TradeType` enum and field-level validation.
 - **FifoLot Model:** `models/fifo_lot.py` — Pydantic model with `is_depleted()` and `consume()` methods.
 - **GainRecord Model:** `models/gain_record.py` — Pydantic model with `audit_note` for calculation transparency.
 - **Tax Config:** `config/tax_config_2025.yaml` — Externalized income tax brackets, WPI threshold, and exemption limits for fiscal year 2025.
-
----
+- **Config Loader:** `src/config_loader.py` — Decimal-safe YAML parser to prevent floating-point precision errors in tax calculations.
 
 ## [0.3.0] - 2026-02-18
 #### Added
