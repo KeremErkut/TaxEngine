@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant U as User / Investor
+    participant CLI as CLI / Input Handler
+    participant DL as DataLoader
+    participant T as Trade Object (Pydantic)
+
+    U->>CLI: Provide file path (CSV/Excel)
+    CLI->>DL: load_data(file_path)
+    
+    Note over DL: File Format Validation
+    alt Invalid Format / Missing Columns
+        DL-->>CLI: Error: "Invalid Schema"
+        CLI-->>U: Display Error Message
+    else Valid Format
+        DL->>DL: Check for missing fields
+        DL->>DL: Normalize Dates (DD/MM/YYYY etc.)
+        
+        loop For Each Row in File
+            DL->>T: Instantiate Trade(ticker, type, qty, price, date)
+            T->>T: validate_data()
+            T-->>DL: Valid Trade Object
+        end
+        
+        DL-->>CLI: Return List<Trade>
+        CLI-->>U: Display Success: "X Trades Loaded"
+    end

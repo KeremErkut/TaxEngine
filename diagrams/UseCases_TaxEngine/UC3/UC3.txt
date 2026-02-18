@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant U as User / Investor
+    participant CLI as CLI / Input Handler
+    participant RG as ReportGenerator
+    participant FS as File System / Export Tool
+
+    U->>CLI: Request Final Tax Report
+    CLI->>RG: generate_summary(List<GainRecord>)
+    
+    Note over RG: Process REQ-3.1 & REQ-3.3
+    RG->>RG: Calculate Total Gains & Losses
+    RG->>RG: Apply Income Tax Brackets (GİB)
+    
+    RG->>RG: generate_audit_breakdown()
+    Note right of RG: Transaction-level details (REQ-3.2)
+    
+    alt User selects PDF
+        RG->>FS: export_to_pdf(filename)
+    else User selects Excel
+        RG->>FS: export_to_excel(filename)
+    end
+    
+    FS-->>U: Deliver Document (.pdf / .xlsx)
+    
+    Note over CLI, RG: Session Termination
+    CLI->>RG: Purge GainRecords from RAM
+    CLI->>U: Display "Session Ended - Data Cleared"

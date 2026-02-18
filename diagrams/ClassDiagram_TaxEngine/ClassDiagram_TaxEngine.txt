@@ -1,0 +1,55 @@
+classDiagram
+    class Trade {
+        +UUID trade_id
+        +String ticker
+        +TradeType type
+        +Decimal quantity
+        +Decimal price_fc
+        +Date trade_date
+        +validate_data()
+    }
+
+    class FifoLot {
+        +UUID lot_id
+        +UUID purchase_trade_id
+        +Decimal original_qty
+        +Decimal remaining_qty
+        +Decimal cost_basis_tl
+        +Date purchase_date
+        +is_depleted() bool
+    }
+
+    class ReferenceDataService {
+        -Dict exchange_rates
+        -Dict wpi_indices
+        +get_rate(date, currency) Decimal
+        +get_wpi(date) Decimal
+    }
+
+    class TaxEngine {
+        -List~FifoLot~ active_lots
+        -ReferenceDataService ref_service
+        +process_trades(List~Trade~)
+        +match_fifo(SellTrade) List~GainRecord~
+        +calculate_indexing(FifoLot, SellTrade) Decimal
+    }
+
+    class GainRecord {
+        +UUID gain_id
+        +UUID sell_trade_id
+        +Decimal realized_gain_tl
+        +bool is_indexed
+        +String audit_note
+    }
+
+    class ReportGenerator {
+        +generate_summary(List~GainRecord~)
+        +export_to_pdf(filename)
+        +export_to_excel(filename)
+    }
+
+    Trade "1" --o "1..*" FifoLot : creates
+    TaxEngine "1" --> "*" Trade : processes
+    TaxEngine "1" ..> "1" ReferenceDataService : uses
+    TaxEngine "1" -- "*" GainRecord : produces
+    ReportGenerator "1" ..> "*" GainRecord : consumes

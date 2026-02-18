@@ -1,0 +1,43 @@
+sequenceDiagram
+    participant CLI as CLI / Input Handler
+    participant TE as TaxEngine (Core)
+    participant RDS as ReferenceDataService
+    participant FL as FifoLot (Object)
+    participant GR as GainRecord (Object)
+
+    CLI->>TE: process_trades(List<Trade>)
+    TE->>TE: SORT trades BY trade_date ASC [cite: 88]
+
+    loop For Each Trade
+        alt Trade.type == "BUY" [cite: 90]
+            TE->>FL: create_fifo_lot(trade) [cite: 92]
+            TE->>TE: active_lots.append(new_lot) [cite: 93]
+        else Trade.type == "SELL" [cite: 94]
+            TE->>TE: execute_fifo_matching(sell_trade) [cite: 101]
+            
+            TE->>RDS: get_rate(sell_date) [cite: 77, 103]
+            RDS-->>TE: TCMB FX Rate
+            
+            loop While shares_to_sell > 0 [cite: 105]
+                TE->>TE: current_lot = active_lots.first() [cite: 107]
+                
+                TE->>RDS: get_wpi(sell_date - 1), get_wpi(purchase_date - 1) [cite: 109]
+                RDS-->>TE: WPI Values (Yİ-ÜFE)
+                
+                Note over TE: Calculate Indexing Ratio (IR) [cite: 109, 129]
+                
+                alt IR >= 1.10 (GVK 80-81 Compliance) [cite: 110, 111, 269]
+                    TE->>TE: adjusted_cost = cost * IR [cite: 112]
+                    TE->>TE: is_indexed = TRUE
+                else IR < 1.10
+                    TE->>TE: adjusted_cost = original_cost [cite: 115]
+                    TE->>TE: is_indexed = FALSE
+                end
+
+                TE->>GR: create_gain_record(total_gain, is_indexed) [cite: 123]
+                TE->>FL: update_lot_remaining_qty(matched_qty) [cite: 124]
+            end
+        end
+    end
+
+    TE-->>CLI: Return all_gain_records [cite: 99]

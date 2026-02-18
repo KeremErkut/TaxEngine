@@ -1,0 +1,45 @@
+graph LR
+    subgraph "External World"
+        User([User / Investor])
+        Sources[(TCMB & TÜİK Files)]
+    end
+
+    subgraph "TaxEngine System "
+        direction TB
+        
+        subgraph "Presentation Layer"
+            CLI[CLI / Input Handler]
+        end
+
+        subgraph "Data Access Layer"
+            DL[Data Loader]
+            RDS[Reference Data Service]
+        end
+
+        subgraph "Core Business Logic"
+            FIFO[FIFO Matching Engine]
+            CALC[Tax Compliance Engine]
+        end
+
+        subgraph "Output Layer"
+            RG[Report Generator]
+        end
+
+        %% Connections
+        CLI --> DL
+        DL --> FIFO
+        RDS --> CALC
+        FIFO --> CALC
+        CALC --> RG
+    end
+
+    %% External Connections
+    User -->|CSV/Excel| CLI
+    Sources -->|FX Rates / WPI| RDS
+    RG -->|PDF/Excel Report| User
+
+    %% Styling
+    style CLI fill:#f9f,stroke:#333,stroke-width:2px
+    style FIFO fill:#bbf,stroke:#333,stroke-width:2px
+    style CALC fill:#bbf,stroke:#333,stroke-width:2px
+    style RG fill:#bfb,stroke:#333,stroke-width:2px
