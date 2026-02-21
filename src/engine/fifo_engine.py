@@ -104,6 +104,7 @@ class FifoEngine:
                     matched_qty=matched_qty,
                     realized_gain_tl=total_gain,
                     is_indexed=is_indexed,
+                    wpi_ratio=index_ratio,
                     audit_note=audit_note,
                 )
             )
