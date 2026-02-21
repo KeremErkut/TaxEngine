@@ -25,15 +25,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **PDF Reporter:** `pdf_reporter.py` — Formatted compliance report for tax authority submission.
 - **Session Termination:** RAM purge logic in `TaxEngine.end_session()` upon report export.
 
-### [0.6.0] - Planned 
+---
+
+### [0.6.0] - 2026-02-21 
 #### Added
 - **ReferenceDataService:** `reference_service.py` — In-memory loader for CBRT (TCMB) FX rates and TURKSTAT (TÜİK) WPI indices with date-based lookup.
 - **FIFO Engine:** `fifo_engine.py` — Chronological lot matching algorithm with partial fill support.
 - **Tax Calculator:** `tax_calculator.py` — GVK 80-81 compliant indexing logic with 10% WPI threshold enforcement.
 
----
-
-### [0.5.0] - 2026-02-22
+### [0.5.0] - 2026-02-21
 #### Added
 - **DataSource Interface:** `loader/base.py` — Abstract base class for future data source adapters.
 - **CSV Loader:** `loader/csv_loader.py` — CSV/Excel ingestion with date normalization and schema validation.
