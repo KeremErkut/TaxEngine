@@ -31,12 +31,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **FIFO Engine:** `fifo_engine.py` — Chronological lot matching algorithm with partial fill support.
 - **Tax Calculator:** `tax_calculator.py` — GVK 80-81 compliant indexing logic with 10% WPI threshold enforcement.
 
-### [0.5.0] - Planned 
+---
+
+### [0.5.0] - 2026-02-22
 #### Added
 - **DataSource Interface:** `loader/base.py` — Abstract base class for future data source adapters.
 - **CSV Loader:** `loader/csv_loader.py` — CSV/Excel ingestion with date normalization and schema validation.
-
----
+- **Sample Dataset:** `examples/sample_trades.csv` — Mock dataset for testing.
 
 ### [0.4.0] - 2026-02-19
 #### Added
