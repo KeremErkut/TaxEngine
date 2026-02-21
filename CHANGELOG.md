@@ -19,13 +19,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Unit Tests — FIFO:** Edge case coverage for partial lot matching, multi-year positions, and zero-gain years.
 - **Unit Tests — Tax Calculator:** Threshold boundary tests for the 10% WPI indexing rule.
 
-### [0.7.0] - Planned 
+---
+
+### [0.7.0] - 2026-02-21
 #### Added
-- **Excel Reporter:** `excel_reporter.py` — Annual Tax Summary and Transaction Audit List in `.xlsx` format.
-- **PDF Reporter:** `pdf_reporter.py` — Formatted compliance report for tax authority submission.
+- **Excel Reporter:** `src/reporter/excel_reporter.py` — Two-sheet .xlsx report with Tax Summary and Audit List. ROUND_HALF_UP rounding, Decimal precision preserved throughout.
+- **PDF Reporter:** `src/reporter/pdf_reporter.py` — Formatted A4 compliance report with color-coded gains/losses and structured WPI ratio display.
 - **Session Termination:** All in-memory data cleared automatically upon process exit via Python garbage collection.
 
----
+#### Changed
+- **GainRecord:** Added `wpi_ratio` field for structured numeric storage, replacing fragile audit_note string parsing.
+- **FifoEngine:** Updated GainRecord instantiation to pass `wpi_ratio` directly.
 
 ### [0.6.0] - 2026-02-21 
 #### Added
