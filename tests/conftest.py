@@ -17,14 +17,22 @@ def make_trade(ticker, trade_type, qty, price, trade_date):
 
 
 def make_ref_service(rates: dict, wpi: dict):
-    """
-    Creates a mock ReferenceDataService.
-    rates: {"YYYY-MM-DD": Decimal}
-    wpi:   {(year, month): Decimal}
-    """
     mock = MagicMock()
-    mock.get_rate.side_effect = lambda d, currency="USD": rates[d.isoformat()]
-    mock.get_wpi.side_effect = lambda y, m: wpi[(y, m)]
+
+    def get_rate(d, currency="USD"):
+        key = d.isoformat()
+        if key not in rates:
+            raise ValueError(f"TCMB kuru bulunamadı: {key}")
+        return rates[key]
+
+    def get_wpi(y, m):
+        key = (y, m)
+        if key not in wpi:
+            raise ValueError(f"WPI bulunamadı: {y}/{m}")
+        return wpi[key]
+
+    mock.get_rate.side_effect = get_rate
+    mock.get_wpi.side_effect = get_wpi
     return mock
 
 
