@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 #### Added
 - **Excel Reporter:** `excel_reporter.py` — Annual Tax Summary and Transaction Audit List in `.xlsx` format.
 - **PDF Reporter:** `pdf_reporter.py` — Formatted compliance report for tax authority submission.
-- **Session Termination:** RAM purge logic in `TaxEngine.end_session()` upon report export.
+- **Session Termination:** All in-memory data cleared automatically upon process exit via Python garbage collection.
 
 ---
 
