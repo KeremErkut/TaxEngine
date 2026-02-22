@@ -1,47 +1,51 @@
 erDiagram
     USER ||--o{ TRADE : executes
     TRADE ||--o{ FIFOLOT : creates_or_consumes
-    TRADE ||--|| GAIN_RECORD : generates
+    TRADE ||--o{ GAIN_RECORD : generates
     TRADE }o--|| REFERENCE_DATA : uses
     FIFOLOT }o--|| REFERENCE_DATA : indexed_by
 
     USER {
-        int user_id PK
+        uuid user_id PK
         string name
         string tax_status "Full Taxpayer"
     }
 
     TRADE {
-        int trade_id PK
-        int user_id FK
+        uuid trade_id PK
+        uuid user_id FK
         string ticker
-        string type "BUY / SELL"
-        float quantity
-        float price_fc "Foreign Currency"
+        string trade_type "BUY / SELL"
+        decimal quantity
+        decimal price_fc "Foreign Currency"
         date trade_date
-        float cbrt_rate
+        string currency
     }
 
     FIFOLOT {
-        int lot_id PK
-        int purchase_trade_id FK
-        float original_qty
-        float remaining_qty
-        float cost_basis_tl
+        uuid lot_id PK
+        uuid purchase_trade_id FK
+        string ticker
+        decimal original_qty
+        decimal remaining_qty
+        decimal cost_basis_tl
         date purchase_date
     }
 
     GAIN_RECORD {
-        int gain_id PK
-        int sell_trade_id FK
-        float taxable_income_tl
+        uuid gain_id PK
+        uuid sell_trade_id FK
+        string ticker
+        decimal matched_qty
+        decimal realized_gain_tl
+        decimal wpi_ratio
         boolean is_indexed
-        string tax_bracket
+        string audit_note
     }
 
     REFERENCE_DATA {
         int ref_id PK
         date entry_date
-        float cbrt_buying_rate
-        float wpi_index_value "Yİ-ÜFE"
+        decimal cbrt_buying_rate
+        decimal wpi_index_value "Yİ-ÜFE"
     }

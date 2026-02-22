@@ -2,54 +2,90 @@ classDiagram
     class Trade {
         +UUID trade_id
         +String ticker
-        +TradeType type
+        +TradeType trade_type
         +Decimal quantity
         +Decimal price_fc
         +Date trade_date
-        +validate_data()
     }
 
     class FifoLot {
         +UUID lot_id
         +UUID purchase_trade_id
+        +String ticker
         +Decimal original_qty
         +Decimal remaining_qty
         +Decimal cost_basis_tl
         +Date purchase_date
         +is_depleted() bool
+        +consume(qty) FifoLot
+    }
+
+    class GainRecord {
+        +UUID gain_id
+        +UUID sell_trade_id
+        +String ticker
+        +Decimal matched_qty
+        +Decimal realized_gain_tl
+        +Decimal wpi_ratio
+        +bool is_indexed
+        +String audit_note
     }
 
     class ReferenceDataService {
         -Dict exchange_rates
         -Dict wpi_indices
         +get_rate(date, currency) Decimal
-        +get_wpi(date) Decimal
+        +get_wpi(year, month) Decimal
     }
 
-    class TaxEngine {
+    class FifoEngine {
         -List~FifoLot~ active_lots
+        -List~GainRecord~ gain_records
         -ReferenceDataService ref_service
-        +process_trades(List~Trade~)
-        +match_fifo(SellTrade) List~GainRecord~
-        +calculate_indexing(FifoLot, SellTrade) Decimal
+        -Dict config
+        +process(List~Trade~) List~GainRecord~
+        -_handle_buy(Trade)
+        -_handle_sell(Trade)
+        -_previous_month(date) tuple
     }
 
-    class GainRecord {
-        +UUID gain_id
-        +UUID sell_trade_id
-        +Decimal realized_gain_tl
-        +bool is_indexed
-        +String audit_note
+    class TaxCalculator {
+        -Dict config
+        -Decimal exemption
+        -List brackets
+        +calculate(List~GainRecord~) dict
+        -_apply_brackets(Decimal) Decimal
     }
 
-    class ReportGenerator {
-        +generate_summary(List~GainRecord~)
-        +export_to_pdf(filename)
-        +export_to_excel(filename)
+    class ExcelReporter {
+        +generate(summary, records, path) str
+        -_write_summary_sheet(wb, summary)
+        -_write_audit_sheet(wb, records)
+        -_format_money_cell(cell)
+        -_round(value) Decimal
     }
 
-    Trade "1" --o "1..*" FifoLot : creates
-    TaxEngine "1" --> "*" Trade : processes
-    TaxEngine "1" ..> "1" ReferenceDataService : uses
-    TaxEngine "1" -- "*" GainRecord : produces
-    ReportGenerator "1" ..> "*" GainRecord : consumes
+    class PDFReporter {
+        +generate(summary, records, path) str
+        -_build_summary_table(summary) Table
+        -_build_audit_table(records) Table
+        -_fmt(value) str
+    }
+
+    class CSVLoader {
+        +load(source) List~Trade~
+    }
+
+    class DataSource {
+        <<abstract>>
+        +load(source) List~Trade~
+    }
+
+    DataSource <|-- CSVLoader
+    CSVLoader ..> Trade : creates
+    FifoEngine --> ReferenceDataService : uses
+    FifoEngine ..> FifoLot : manages
+    FifoEngine ..> GainRecord : produces
+    TaxCalculator ..> GainRecord : consumes
+    ExcelReporter ..> GainRecord : consumes
+    PDFReporter ..> GainRecord : consumes
