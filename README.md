@@ -53,6 +53,7 @@ taxengine --trades <path> --format <excel|pdf> [options]
 taxengine --trades examples/sample_trades.csv --format excel
 taxengine --trades examples/sample_trades.csv --format pdf --output my_report.pdf
 ```
+---
 
 ---
 
@@ -84,9 +85,9 @@ TaxEngine/
 ├── config/
 │   └── tax_config_2025.yaml    # Tax brackets, WPI threshold, exemption limits
 ├── examples/
-│   ├── sample_trades.csv       # Sample trade history
-│   ├── tcmb_rates.csv          # Sample CBRT FX rates
-│   └── tuik_wpi.csv            # Sample TURKSTAT WPI indices
+│   ├── sample_trades.csv       # Mock trade history (test data only)
+│   ├── tcmb_rates.csv          # Mock CBRT FX rates (test data only)
+│   └── tuik_wpi.csv            # Mock TURKSTAT WPI indices (test data only)
 ├── src/
 │   ├── main.py                 # CLI entry point
 │   ├── config_loader.py        # Decimal-safe YAML loader
@@ -108,6 +109,14 @@ TaxEngine/
 This tool is for informational purposes only and does not constitute
 official tax advice. Consult a certified tax professional (mali müşavir)
 before filing your tax declaration.
+
+## Example Data Disclaimer
+
+The CSV files provided in the `examples/` directory are mock datasets
+created for testing and demonstration purposes.
+
+They do not represent official CBRT (TCMB) or TURKSTAT (TÜİK) data
+and must not be used for real-world tax filings.
 
 ---
 
