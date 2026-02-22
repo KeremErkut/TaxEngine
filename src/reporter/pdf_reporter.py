@@ -66,6 +66,20 @@ class PDFReporter:
         story.append(Spacer(1, 0.3 * cm))
         story.append(self._build_audit_table(records))
 
+        disclamer_style = ParagraphStyle(
+            "Disclaimer",
+            parent=styles["Normal"],
+            textColor=colors.red,
+            fontSize=9,
+            italics=True,
+            spaceBefore=20,
+        )
+        story.append(Spacer(1, 0.5 * cm))
+        story.append(Paragraph(
+            "Advisory only. Consult a tax professional for offical filing.",
+            disclamer_style
+        ))
+
         doc.build(story)
         return str(path)
 

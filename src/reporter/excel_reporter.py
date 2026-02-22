@@ -48,6 +48,13 @@ class ExcelReporter:
             del wb["Sheet"]
 
         path = Path(output_path)
+
+        ws = wb["Tax Summary"]
+        ws.append([])
+        ws.append(["Advisory only. Consult a tax professional for official filing."])
+        disclaimer_row = ws.max_row
+        ws.cell(row=disclaimer_row, column=1).font = Font(color="FF0000", italic=True)
+
         wb.save(path)
 
         return str(path)
