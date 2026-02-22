@@ -10,7 +10,9 @@ venv/
 .vscode/
 .idea/
 
-# Data (Büyük veri dosyalarını repo dışında tutmak iyidir)
+# Data 
 assets/*.csv
 assets/*.xlsx
 !assets/sample_trades.csv
+
+taxengine.egg-info/
