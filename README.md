@@ -1,10 +1,8 @@
 # TaxEngine
 
-A proof-of-concept tax calculation engine for foreign equity transactions,
-compliant with Turkish income tax law 
+A personal project developed to calculate tax liabilities for foreign equity transactions, fully compliant with Turkish income tax law. 
 
-Built as a demonstration of production-grade software engineering practices
-for brokerage firm evaluation.
+Built as a portfolio piece to demonstrate robust software engineering practices and to simplify complex tax calculations for individual use.
 
 ---
 
@@ -104,12 +102,6 @@ TaxEngine/
 
 ---
 
-## Disclaimer
-
-This tool is for informational purposes only and does not constitute
-official tax advice. Consult a certified tax professional (mali müşavir)
-before filing your tax declaration.
-
 ## Example Data Disclaimer
 
 The CSV files provided in the `examples/` directory are mock datasets
@@ -126,3 +118,9 @@ and must not be used for real-world tax filings.
 - FIFO lot matching follows chronological ordering.
 - WPI indexing applied when inflation ratio exceeds 10% threshold.
 - Tax brackets configurable via `tax_config_2025.yaml` without code changes.
+
+## Disclaimer
+
+This tool is for informational purposes only and does not constitute
+official tax advice. Consult a certified tax professional (mali müşavir)
+before filing your tax declaration.
