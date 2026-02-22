@@ -5,15 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased]
-
-### [0.9.0] - Planned 
+### [0.9.0] - 2026-02-22
 #### Added
-- **CLI Polish:** User-facing error messages and progress indicators in Turkish.
-- **Demo Dataset:** Sample CSV file representing a realistic investor transaction history.
-- **README:** Three-step setup and run guide for PoC presentation.
+- **CLI Entry Point:** `src/main.py` — Full pipeline orchestration with ASCII banner, progress logging, and formatted summary output.
+- **taxengine Command:** `setup.py` with console script entry point — callable as `taxengine` from terminal.
+- **Legal Disclaimer:** Advisory warning added to CLI output, Excel, and PDF reports.
+- **README:** Production-grade setup, usage, input format, and technical notes documentation.
 
----
+#### Changed
+- **Excel Reporter:** Legal disclaimer added to Tax Summary sheet.
+- **PDF Reporter:** Legal disclaimer added as styled paragraph.
 
 ### [0.8.0] - 2026-02-22
 #### Added
