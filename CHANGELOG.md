@@ -13,13 +13,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Demo Dataset:** Sample CSV file representing a realistic investor transaction history.
 - **README:** Three-step setup and run guide for PoC presentation.
 
-### [0.8.0] - Planned 
-#### Added
-- **Cross-Validation:** Manual verification of engine outputs against GIB sample tax declarations.
-- **Unit Tests — FIFO:** Edge case coverage for partial lot matching, multi-year positions, and zero-gain years.
-- **Unit Tests — Tax Calculator:** Threshold boundary tests for the 10% WPI indexing rule.
-
 ---
+
+### [0.8.0] - 2026-02-22
+#### Added
+- **Unit Tests — FIFO:** 7 edge case scenario including deterministic gain assertion, loss scenario, stateless behavior, cross-ticker isolation, missing FX rate error handling, exact WPI threshold boundary, and sell without lot error.
+- **Unit Tests — Tax Calculator:** 12 boundary and edge case scenarios including exemption boundary, progressive bracket calculation, top bracket application, Decimal rounding behavior, and stateless behavior.
+- **Test Infrastructure:** `pytest.ini` with pythonpath configuration, `conftest.py` with shared fixtures, modular test directory structure.
 
 ### [0.7.0] - 2026-02-21
 #### Added
