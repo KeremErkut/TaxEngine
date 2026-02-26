@@ -74,7 +74,7 @@ class FifoEngine:
 
             # Clean previous-month calculation (fixes January → December year rollover)
             sell_year, sell_month = self._previous_month(trade.trade_date)
-            buy_year, buy_month = self._previous_month(lot.purchase_date)
+            buy_year, buy_month = lot.purchase_date.year, lot.purchase_date.month
 
             sell_wpi = self._ref_service.get_wpi(sell_year, sell_month)
             buy_wpi = self._ref_service.get_wpi(buy_year, buy_month)
