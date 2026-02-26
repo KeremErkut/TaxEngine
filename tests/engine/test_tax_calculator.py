@@ -17,12 +17,9 @@ def make_gain_record(realized_gain_tl, ticker="AAPL", matched_qty="10", is_index
     )
 
 
-def make_config(exemption="18000"):
+def make_config():
     return {
         "fiscal_year": 2025,
-        "exemptions": {
-            "annual_gain_exemption_tl": Decimal(exemption),
-        },
         "tax_brackets": [
             {"upper_limit_tl": Decimal("158000"), "rate": Decimal("0.15")},
             {"upper_limit_tl": Decimal("330000"), "rate": Decimal("0.20")},
@@ -48,42 +45,13 @@ def test_net_loss_no_tax():
     assert summary["net_gain_tl"] == Decimal("-40000")
     assert summary["taxable_base_tl"] == Decimal("0")
     assert summary["estimated_tax_tl"] == Decimal("0")
-    assert summary["exemption_applied_tl"] == Decimal("0")
 
 
 # -------------------------------------------------------
-# TEST 2: Gain below exemption
-# -------------------------------------------------------
-def test_gain_below_exemption_no_tax():
-    records = [make_gain_record("15000")]
-
-    calc = TaxCalculator(make_config())
-    summary = calc.calculate(records)
-
-    assert summary["taxable_base_tl"] == Decimal("0")
-    assert summary["estimated_tax_tl"] == Decimal("0")
-    assert summary["exemption_applied_tl"] == Decimal("15000")
-
-
-# -------------------------------------------------------
-# TEST 3: Exact exemption boundary
-# -------------------------------------------------------
-def test_exact_exemption_boundary():
-    records = [make_gain_record("18000")]
-
-    calc = TaxCalculator(make_config())
-    summary = calc.calculate(records)
-
-    assert summary["taxable_base_tl"] == Decimal("0")
-    assert summary["estimated_tax_tl"] == Decimal("0")
-
-
-# -------------------------------------------------------
-# TEST 4: First bracket exact boundary
+# TEST 2: First bracket exact boundary
 # -------------------------------------------------------
 def test_first_bracket_exact_boundary():
-    # 158000 taxable base
-    records = [make_gain_record("176000")]  # 176000 - 18000 = 158000
+    records = [make_gain_record("158000")]
 
     calc = TaxCalculator(make_config())
     summary = calc.calculate(records)
@@ -93,10 +61,10 @@ def test_first_bracket_exact_boundary():
 
 
 # -------------------------------------------------------
-# TEST 5: First bracket + 1 TL
+# TEST 3: First bracket + 1 TL
 # -------------------------------------------------------
 def test_first_bracket_plus_one():
-    records = [make_gain_record("176001")]  # taxable = 158001
+    records = [make_gain_record("158001")]
 
     calc = TaxCalculator(make_config())
     summary = calc.calculate(records)
@@ -104,15 +72,14 @@ def test_first_bracket_plus_one():
     # 158000 * 0.15 = 23700
     # 1 * 0.20 = 0.20
     expected = Decimal("23700") + Decimal("0.20")
-
     assert summary["estimated_tax_tl"] == expected
 
 
 # -------------------------------------------------------
-# TEST 6: Progressive bracket multi-tier
+# TEST 4: Progressive bracket multi-tier
 # -------------------------------------------------------
 def test_progressive_bracket_calculation():
-    records = [make_gain_record("358000")]  # taxable = 340000
+    records = [make_gain_record("340000")]
 
     calc = TaxCalculator(make_config())
     summary = calc.calculate(records)
@@ -124,34 +91,32 @@ def test_progressive_bracket_calculation():
 
 
 # -------------------------------------------------------
-# TEST 7: Large income — 40% bracket
+# TEST 5: Large income — 40% bracket
 # -------------------------------------------------------
 def test_top_bracket_application():
-    records = [make_gain_record("5000000")]  # taxable = 4982000
+    records = [make_gain_record("5000000")]
 
     calc = TaxCalculator(make_config())
     summary = calc.calculate(records)
 
-    # Ensure top bracket triggered
-    assert summary["taxable_base_tl"] == Decimal("4982000")
+    assert summary["taxable_base_tl"] == Decimal("5000000")
     assert summary["estimated_tax_tl"] > Decimal("0")
 
 
 # -------------------------------------------------------
-# TEST 8: Decimal rounding behavior
+# TEST 6: Decimal rounding behavior
 # -------------------------------------------------------
 def test_decimal_rounding_behavior():
-    records = [make_gain_record("18000.55")]
+    records = [make_gain_record("0.55")]
 
     calc = TaxCalculator(make_config())
     summary = calc.calculate(records)
 
-    # 0.55 taxable
     assert summary["taxable_base_tl"] == Decimal("0.55")
 
 
 # -------------------------------------------------------
-# TEST 9: Taxable base never negative
+# TEST 7: Taxable base never negative
 # -------------------------------------------------------
 def test_taxable_base_never_negative():
     records = [make_gain_record("10000")]
@@ -163,7 +128,7 @@ def test_taxable_base_never_negative():
 
 
 # -------------------------------------------------------
-# TEST 10: Idempotency — repeated calculation same result
+# TEST 8: Idempotency — repeated calculation same result
 # -------------------------------------------------------
 def test_calculator_is_stateless():
     records = [make_gain_record("68000")]
@@ -177,7 +142,7 @@ def test_calculator_is_stateless():
 
 
 # -------------------------------------------------------
-# TEST 11: Empty records
+# TEST 9: Empty records
 # -------------------------------------------------------
 def test_empty_records():
     calc = TaxCalculator(make_config())
@@ -191,7 +156,7 @@ def test_empty_records():
 
 
 # -------------------------------------------------------
-# TEST 12: Fiscal year from config
+# TEST 10: Fiscal year from config
 # -------------------------------------------------------
 def test_fiscal_year_from_config():
     calc = TaxCalculator(make_config())
