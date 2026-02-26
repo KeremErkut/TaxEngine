@@ -7,10 +7,6 @@ fiscal_year: 2025
 indexing:
   wpi_threshold: 0.10 # 10% increase condition
 
-# Dividend & Exemption - GVK Mük. Madde 80
-exemptions:
-  annual_gain_exemption_tl: 18000 # 2025 Exemption Amount
-
 # Income Tax Brackets 2025
 # Format: [upper_limit_tl, rate]
 # The upper limit of last slice is null
