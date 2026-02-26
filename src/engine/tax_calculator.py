@@ -7,32 +7,19 @@ class TaxCalculator:
     Computes annual tax summary from a list of GainRecord objects.
 
     Applies:
-    - GVK Article 80 (annual capital gain exemption)
-    - GVK Article 81 (progressive income tax brackets)
+    - GVK Mük. Madde 81 (WPI indexing + progressive income tax brackets)
 
-    All thresholds and brackets are configuration-driven.
+    Note: No exemption or declaration threshold applies to foreign equity
+    capital gains. All net gains are fully taxable regardless of amount.
     """
 
     def __init__(self, config: dict) -> None:
         self._config = config
-        self._exemption = config["exemptions"]["annual_gain_exemption_tl"]
         self._brackets = config["tax_brackets"]
         self._fiscal_year = config["fiscal_year"]
 
     def calculate(self, records: list[GainRecord]) -> dict:
-        """
-        Calculates yearly tax metrics.
 
-        Returns a dictionary containing:
-        - total gains
-        - total losses
-        - net gain
-        - exemption applied
-        - taxable base
-        - estimated tax
-        """
-
-        # Decimal-safe summation (prevents int fallback if list is empty)
         total_gain = sum(
             (r.realized_gain_tl for r in records if r.realized_gain_tl > 0),
             Decimal("0"),
@@ -43,22 +30,10 @@ class TaxCalculator:
             Decimal("0"),
         )
 
-        # Loss values are already negative
         net_gain = total_gain + total_loss
 
-        # Exemption logic (GVK Art. 80 compliant)
-        # Negative net gains should NOT trigger exemption application
-        if net_gain <= Decimal("0"):
-            taxable_base = Decimal("0")
-            exemption_applied = Decimal("0")
-
-        elif net_gain <= self._exemption:
-            taxable_base = Decimal("0")
-            exemption_applied = net_gain
-
-        else:
-            taxable_base = net_gain - self._exemption
-            exemption_applied = self._exemption
+        # No exemption for foreign equity capital gains (GVK Mük. 81)
+        taxable_base = max(net_gain, Decimal("0"))
 
         estimated_tax = self._apply_brackets(taxable_base)
 
@@ -67,18 +42,11 @@ class TaxCalculator:
             "total_gain_tl": total_gain,
             "total_loss_tl": total_loss,
             "net_gain_tl": net_gain,
-            "exemption_applied_tl": exemption_applied,
             "taxable_base_tl": taxable_base,
             "estimated_tax_tl": estimated_tax,
         }
 
     def _apply_brackets(self, taxable_base: Decimal) -> Decimal:
-        """
-        Applies progressive income tax brackets.
-
-        Iterates from lowest to highest bracket.
-        """
-
         if taxable_base <= Decimal("0"):
             return Decimal("0")
 
@@ -91,7 +59,6 @@ class TaxCalculator:
             upper = bracket["upper_limit_tl"]
 
             if upper is None:
-                # Final bracket (no upper bound)
                 total_tax += remaining * rate
                 break
 
