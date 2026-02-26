@@ -7,10 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### [0.9.2] - 2026-02-26
 #### Fixed
-- **Tax Calculator:** Removed capital gain exemption logic entirely. Foreign equity capital gains have no exemption or declaration threshold under Turkish tax law — all net gains are fully taxable.
-- **Config:** Removed `annual_gain_exemption_tl` from `tax_config_2025.yaml`. No legal basis exists for this parameter in the context of foreign equity capital gains.
-- **Excel Reporter:** Removed `Exemption Applied (TL)` row from Tax Summary sheet.
-- **PDF Reporter:** Removed `Exemption Applied (TL)` row from Tax Summary table.
+- **FifoEngine:** ...
+- **Tax Calculator:** ...
+- **Config:** ...
+- **Excel Reporter:** ...
+- **PDF Reporter:** ...
+- **CLI (main.py):** Removed `exemption_applied_tl` from terminal summary output.
+- **Config Loader:** Removed `exemptions` block parsing — no longer present in `tax_config_2025.yaml`.
 
 #### Changed
 - **Unit Tests — Tax Calculator:** Removed exemption-boundary tests (TEST 2, TEST 3). Updated remaining tests to reflect no-exemption logic. Bracket boundary values adjusted to remove exemption offset.
