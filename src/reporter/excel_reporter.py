@@ -77,7 +77,6 @@ class ExcelReporter:
             ("Total Gain (TL)", self._round(summary["total_gain_tl"])),
             ("Total Loss (TL)", self._round(summary["total_loss_tl"])),
             ("Net Gain (TL)", self._round(summary["net_gain_tl"])),
-            ("Exemption Applied (TL)", self._round(summary["exemption_applied_tl"])),
             ("Taxable Base (TL)", self._round(summary["taxable_base_tl"])),
             ("Estimated Tax (TL)", self._round(summary["estimated_tax_tl"])),
         ]

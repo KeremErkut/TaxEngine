@@ -89,7 +89,6 @@ class PDFReporter:
             ["Total Gain (TL)", self._fmt(summary["total_gain_tl"])],
             ["Total Loss (TL)", self._fmt(summary["total_loss_tl"])],
             ["Net Gain (TL)", self._fmt(summary["net_gain_tl"])],
-            ["Exemption Applied (TL)", self._fmt(summary["exemption_applied_tl"])],
             ["Taxable Base (TL)", self._fmt(summary["taxable_base_tl"])],
             ["Estimated Tax (TL)", self._fmt(summary["estimated_tax_tl"])],
         ]
