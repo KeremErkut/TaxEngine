@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+### [0.9.2] - 2026-02-26
+#### Fixed
+- **Tax Calculator:** Removed capital gain exemption logic entirely. Foreign equity capital gains have no exemption or declaration threshold under Turkish tax law — all net gains are fully taxable.
+- **Config:** Removed `annual_gain_exemption_tl` from `tax_config_2025.yaml`. No legal basis exists for this parameter in the context of foreign equity capital gains.
+- **Excel Reporter:** Removed `Exemption Applied (TL)` row from Tax Summary sheet.
+- **PDF Reporter:** Removed `Exemption Applied (TL)` row from Tax Summary table.
+
+#### Changed
+- **Unit Tests — Tax Calculator:** Removed exemption-boundary tests (TEST 2, TEST 3). Updated remaining tests to reflect no-exemption logic. Bracket boundary values adjusted to remove exemption offset.
+
+### [0.9.1] - 2026-02-26
+#### Fixed
+- **FifoEngine:** WPI indexing now correctly uses the purchase month itself (inclusive) instead of the previous month. Per GVK Mük. 81, the acquisition month is included and the sale month is excluded when calculating the WPI ratio. (`_previous_month()` removed from buy-side calculation.)
+
 ### [0.9.0] - 2026-02-22
 #### Added
 - **CLI Entry Point:** `src/main.py` — Full pipeline orchestration with ASCII banner, progress logging, and formatted summary output.
