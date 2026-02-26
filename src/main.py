@@ -180,7 +180,6 @@ def main():
     print(f"  Total Gain   : {format_money(summary['total_gain_tl']):>15} TL")
     print(f"  Total Loss   : {format_money(summary['total_loss_tl']):>15} TL")
     print(f"  Net Gain     : {format_money(summary['net_gain_tl']):>15} TL")
-    print(f"  Exemption    : {format_money(summary['exemption_applied_tl']):>15} TL")
     print(f"  Taxable Base : {format_money(summary['taxable_base_tl']):>15} TL")
     print(f"  Estimated Tax: {format_money(summary['estimated_tax_tl']):>15} TL")
     print("=" * 50)

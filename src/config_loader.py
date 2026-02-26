@@ -19,10 +19,6 @@ def load_tax_config(path: str = "config/tax_config_2025.yaml") -> dict:
         str(raw["indexing"]["wpi_threshold"])
     )
 
-    # Exemption
-    raw["exemptions"]["annual_gain_exemption_tl"] = Decimal(
-        str(raw["exemptions"]["annual_gain_exemption_tl"])
-    )
 
     # Tax brackets
     for bracket in raw["tax_brackets"]:
