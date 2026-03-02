@@ -262,7 +262,7 @@ If you'd like to contribute code:
 - [ ] REST API — expose the calculation engine as a standalone HTTP service (FastAPI), enabling TaxEngine to be called by external systems
 - [ ] Web UI
 
-See the [open issues](https://github.com/KeremErkut/TaxEngine/issues) for a full list of proposed features and known issues.
+See the [project tab](https://github.com/users/KeremErkut/projects/2) for a full list of proposed features and known issues in.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
